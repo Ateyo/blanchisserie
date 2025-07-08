@@ -1,0 +1,56 @@
+# ---- Global ----
+*.log
+*.tmp
+*.swp
+*.swo
+.DS_Store
+.env
+.env.*
+
+# ---- Docker ----
+**/Dockerfile
+**/docker-compose.override.yml
+**/docker-compose.local.yml
+**/.dockerignore
+
+# Docker volumes & containers data (if mounted locally)
+docker-data/
+volumes/
+
+# ---- Node/Angular (laundryOrders) ----
+laundryOrders/node_modules/
+laundryOrders/dist/
+laundryOrders/tmp/
+laundryOrders/.angular/cache/
+laundryOrders/.angular/config.json
+laundryOrders/.angular/cache
+laundryOrders/package-lock.json
+
+# IDE/editor configs
+laundryOrders/.vscode/
+laundryOrders/.idea/
+
+# ---- .NET (laundryOrdersApi) ----
+laundryOrdersApi/bin/
+laundryOrdersApi/obj/
+laundryOrdersApi/.vs/
+laundryOrdersApi/.vscode/
+laundryOrdersApi/*.user
+laundryOrdersApi/*.suo
+laundryOrdersApi/*.csproj.user
+
+# Build output
+laundryOrdersApi/wwwroot/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+*.nuspec
+*.psmdcp
+
+# User secrets
+laundryOrdersApi/secrets.json
+laundryOrdersApi/appsettings.*.json
+
+# ASP.NET local config
+laundryOrdersApi/Properties/launchSettings.json
