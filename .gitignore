@@ -8,7 +8,6 @@
 .env.*
 
 # ---- Docker ----
-**/Dockerfile
 **/docker-compose.override.yml
 **/docker-compose.local.yml
 **/.dockerignore

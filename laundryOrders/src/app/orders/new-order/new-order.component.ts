@@ -1,0 +1,73 @@
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { DatePickerModule } from 'primeng/datepicker';
+import { ButtonModule } from 'primeng/button';
+import { TextareaModule } from 'primeng/textarea';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
+@Component({
+  selector: 'app-new-order',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    CardModule,
+    InputTextModule,
+    DatePickerModule,
+    ButtonModule,
+    TextareaModule,
+    ToastModule
+  ],
+  providers: [MessageService],
+  templateUrl: './new-order.component.html',
+  styleUrls: ['./new-order.component.scss']
+})
+export class NewOrderComponent {
+  orderForm: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router,
+    private messageService: MessageService
+  ) {
+    this.orderForm = this.fb.group({
+      date: [null, Validators.required],
+      articles: ['', Validators.required],
+      identityName: ['', Validators.required],
+      motif: [''],
+      commentaire: ['']
+    });
+  }
+
+  onSubmit() {
+    if (this.orderForm.invalid) {
+      this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs obligatoires.' });
+      return;
+    }
+
+    const orderData = {
+      ...this.orderForm.value,
+      date: this.orderForm.value.date.toISOString() // Format date for backend
+    };
+
+    this.http.post(`${environment.apiUrl}/orders`, orderData).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Commande passée avec succès!' });
+        this.orderForm.reset();
+        this.router.navigate(['/orders']);
+      },
+      error: (err) => {
+        console.error('Error creating order:', err);
+        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la création de la commande.' });
+      }
+    });
+  }
+}

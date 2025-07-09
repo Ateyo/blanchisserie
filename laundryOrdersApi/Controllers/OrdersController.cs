@@ -21,11 +21,15 @@ namespace LaundryOrdersApi.Controllers
             if (order == null || string.IsNullOrWhiteSpace(order.Articles) || order.Date == default)
                 return BadRequest("Date et articles sont obligatoires.");
 
-            // Associer l'utilisateur connecté
-            if (User?.Identity?.Name == null)
-                return Unauthorized("Utilisateur non authentifié.");
-            order.IdentityName = User.Identity.Name;
+            // Associer l'utilisateur connecté et définir les dates
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+                return Unauthorized("Utilisateur non authentifié ou ID utilisateur introuvable.");
+
+            order.UserId = userId;
             order.Status = "En attente"; // Statut initial
+            order.CreatedAt = DateTime.UtcNow;
+            order.UpdatedAt = DateTime.UtcNow;
 
             _context.Orders.Add(order);
             _context.SaveChanges();
@@ -41,10 +45,11 @@ namespace LaundryOrdersApi.Controllers
         [HttpGet("mine")]
         public IActionResult GetMyOrders()
         {
-            if (User?.Identity?.Name == null)
-                return Unauthorized("Utilisateur non authentifié.");
-            var username = User.Identity.Name;
-            var orders = _context.Orders.Where(o => o.IdentityName == username).ToList();
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+                return Unauthorized("Utilisateur non authentifié ou ID utilisateur introuvable.");
+
+            var orders = _context.Orders.Where(o => o.UserId == userId).ToList();
             return Ok(orders);
         }
 

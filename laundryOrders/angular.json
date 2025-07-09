@@ -31,7 +31,9 @@
             ],
             "styles": [
               "src/styles.scss"
-            ]
+            ],
+            "outputPath": "dist/laundryOrders",
+            "index": "src/index.html"
           },
           "configurations": {
             "production": {
