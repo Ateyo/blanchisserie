@@ -33,7 +33,6 @@ password : admin123
 
 ```
 blanchisserie/
-├── blanchisserie.sln           # Visual Studio solution file
 ├── docker-compose.yml          # Multi-container orchestration
 ├── laundryOrdersApi/           # .NET backend API
 │   └── Dockerfile
