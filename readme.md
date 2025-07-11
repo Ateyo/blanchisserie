@@ -17,6 +17,16 @@ This repository contains a full-stack web application for managing laundry order
 - **Order tracking** for users and admins
 - **Modern UI** with Angular & PrimeNG
 
+```
+
+user :
+username : user.name 
+password : user123
+
+admin: admin.name
+password : admin123
+```
+
 ---
 
 ## Project Structure

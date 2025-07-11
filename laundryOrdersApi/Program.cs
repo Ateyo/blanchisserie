@@ -50,16 +50,28 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<LaundryContext>();
-    context.Database.Migrate();
 
+    context.Database.Migrate();
+    //context.Users.RemoveRange(context.Users);
+    //context.SaveChanges();
     if (!context.Users.Any())
     {
-        context.Users.Add(new User
-        {
-            Username = "admin",
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
-            Role = "Admin"
-        });
+        context.Users.RemoveRange(context.Users);
+        context.SaveChanges();
+        context.Users.AddRange(
+            new User
+            {
+                Username = "admin.name",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                Role = "Admin"
+            },
+            new User
+            {
+                Username = "user.name",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("user123"),
+                Role = "User"
+            }
+        );
         context.SaveChanges();
     }
 }

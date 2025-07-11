@@ -18,15 +18,17 @@ namespace LaundryOrdersApi.Controllers
         public IActionResult CreateOrder([FromBody] Order order)
         {
             // Validation des champs requis
-            if (order == null || string.IsNullOrWhiteSpace(order.Articles) || order.Date == default)
+            if (order == null || string.IsNullOrWhiteSpace(order.Articles) || order.Date == null)
                 return BadRequest("Date et articles sont obligatoires.");
 
             // Associer l'utilisateur connecté et définir les dates
             var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+            var usernameClaim = User.FindFirst(System.Security.Claims.ClaimTypes.Name);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId) || usernameClaim == null)
                 return Unauthorized("Utilisateur non authentifié ou ID utilisateur introuvable.");
 
             order.UserId = userId;
+            order.Username = usernameClaim.Value;
             order.Status = "En attente"; // Statut initial
             order.CreatedAt = DateTime.UtcNow;
             order.UpdatedAt = DateTime.UtcNow;

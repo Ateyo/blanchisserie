@@ -46,8 +46,7 @@ export class LoginComponent {
 
         this.auth.login(username!, password!).subscribe({
             next: (res) => {
-                console.log('Login successful:', res.role);
-                this.auth.saveToken(res.token, res.role ?? 'User');
+                this.auth.saveToken(res.token);
                 this.router.navigate(['/orders']);
             },
             error: () => {
