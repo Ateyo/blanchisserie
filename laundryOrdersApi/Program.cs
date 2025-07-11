@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using LaundryOrdersApi.Data;
+using LaundryOrdersApi.Models;
+using BCrypt.Net;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add DbContext (SQLite for demo)
 builder.Services.AddDbContext<LaundryContext>(options =>
-    options.UseSqlite("Data Source=laundry.db"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add authentication with JWT
 builder.Services.AddAuthentication(options =>
@@ -17,15 +19,27 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes("TaCleSecreteUltraSecurisee1234")) // Mettre en config
+            System.Text.Encoding.UTF8.GetBytes("0bwnYtzc9RWwP69CC6KoV2IKgi54h25y")) // Mettre en config
     };
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithMethods("OPTIONS", "GET", "POST", "PUT", "DELETE")
+            .AllowCredentials()
+    );
 });
 
 builder.Services.AddAuthorization();
@@ -33,10 +47,44 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<LaundryContext>();
+
+    context.Database.Migrate();
+    //context.Users.RemoveRange(context.Users);
+    //context.SaveChanges();
+    if (!context.Users.Any())
+    {
+        context.Users.RemoveRange(context.Users);
+        context.SaveChanges();
+        context.Users.AddRange(
+            new User
+            {
+                Username = "admin.name",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                Role = "Admin"
+            },
+            new User
+            {
+                Username = "user.name",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("user123"),
+                Role = "User"
+            }
+        );
+        context.SaveChanges();
+    }
+}
+
+app.UseRouting();
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGet("/test", () => "Hello from API!");
 
 app.Run();

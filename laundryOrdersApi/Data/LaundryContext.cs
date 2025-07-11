@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using BCrypt.Net;
+
 using LaundryOrdersApi.Models; // Adjust namespace as needed
 
 namespace LaundryOrdersApi.Data
@@ -9,5 +11,11 @@ namespace LaundryOrdersApi.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Order> Orders { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+        }
     }
 }
