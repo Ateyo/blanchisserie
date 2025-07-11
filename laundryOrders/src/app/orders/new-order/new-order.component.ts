@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { Order } from '../../shared/models/order.model';
 
 @Component({
   selector: 'app-new-order',
@@ -41,7 +42,6 @@ export class NewOrderComponent {
     this.orderForm = this.fb.group({
       date: [null, Validators.required],
       articles: ['', Validators.required],
-      identityName: ['', Validators.required],
       motif: [''],
       commentaire: ['']
     });
@@ -53,7 +53,7 @@ export class NewOrderComponent {
       return;
     }
 
-    const orderData = {
+    const orderData: Order = {
       ...this.orderForm.value,
       date: this.orderForm.value.date.toISOString() // Format date for backend
     };

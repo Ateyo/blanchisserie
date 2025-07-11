@@ -11,15 +11,29 @@ export class AuthService {
     constructor(private http: HttpClient, private router: Router) { }
 
     login(username: string, password: string) {
-        return this.http.post<{ token: string, role?: string }>(
+        return this.http.post<{ token: string }>(
             `${environment.apiUrl}/auth/login`,
             { username, password }
         );
     }
 
-    saveToken(token: string, role: string = 'User') {
+    saveToken(token: string) {
         localStorage.setItem(this.tokenKey, token);
+        const role = this.getRoleFromToken(token);
         localStorage.setItem(this.roleKey, role);
+    }
+
+    private getRoleFromToken(token: string): string {
+        if (!token) {
+            return 'User';
+        }
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.role || 'User';
+        } catch (e) {
+            console.error('Error decoding token', e);
+            return 'User';
+        }
     }
 
     logout() {

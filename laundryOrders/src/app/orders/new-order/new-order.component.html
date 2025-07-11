@@ -8,12 +8,6 @@
         <small *ngIf="orderForm.get('date')?.invalid && orderForm.get('date')?.dirty" class="p-error">Date est
           obligatoire.</small>
       </div>
-      <div class="p-field p-col-12 md-6">
-        <label for="identityName">Nom / Prénom / Contact</label>
-        <input pInputText id="identityName" type="text" formControlName="identityName">
-        <small *ngIf="orderForm.get('identityName')?.invalid && orderForm.get('identityName')?.dirty"
-          class="p-error">Identité est obligatoire.</small>
-      </div>
       <div class="p-field p-col-12">
         <label for="articles">Articles (ex: 3 chemises, 2 pantalons)</label>
         <textarea pInputTextarea id="articles" formControlName="articles" rows="3"></textarea>

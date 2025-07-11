@@ -7,6 +7,7 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>Date</th>
+                <th>Username</th>
                 <th>Articles</th>
                 <th>Statut</th>
                 <th>Actions</th>
@@ -15,6 +16,7 @@
         <ng-template pTemplate="body" let-order>
             <tr>
                 <td>{{ order.date | date:'dd/MM/yyyy' }}</td>
+                <td>{{ order.username }}</td>
                 <td>{{ order.articles }}</td>
                 <td>{{ order.status }}</td>
                 <td>
@@ -34,7 +36,7 @@
     [draggable]="false" [resizable]="false">
     <div *ngIf="selectedOrder">
         <p><b>Date:</b> {{ selectedOrder.date | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p><b>Identité:</b> {{ selectedOrder.identityName }}</p>
+        <p><b>Username:</b> {{ selectedOrder.username }}</p>
         <p><b>Articles:</b> {{ selectedOrder.articles }}</p>
         <p><b>Statut:</b> {{ selectedOrder.status }}</p>
         <p *ngIf="selectedOrder.motif"><b>Motif:</b> {{ selectedOrder.motif }}</p>
