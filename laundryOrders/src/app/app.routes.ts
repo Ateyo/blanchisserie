@@ -22,5 +22,5 @@ export const routes: Routes = [
         loadComponent: () => import('./orders/new-order/new-order.component').then(m => m.NewOrderComponent),
         canActivate: [authGuard]
     },
-    { path: '', redirectTo: 'login', pathMatch: 'full' }
+    { path: '', redirectTo: 'orders', pathMatch: 'full' }
 ];
