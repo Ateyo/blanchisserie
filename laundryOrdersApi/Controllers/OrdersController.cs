@@ -56,6 +56,17 @@ namespace LaundryOrdersApi.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet("stats")]
+        public IActionResult GetOrderStats()
+        {
+            var total = _context.Orders.Count();
+            var pending = _context.Orders.Count(o => o.Status == "En attente");
+            var validated = _context.Orders.Count(o => o.Status == "Validée");
+
+            return Ok(new { total, pending, validated });
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}/validate")]
         public IActionResult ValidateOrder(int id)
         {

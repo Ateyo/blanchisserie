@@ -5,8 +5,10 @@
 
   <div class="p-toolbar-group-end">
     <ng-container *ngIf="authService.isLoggedIn(); else loggedOut">
-      <a routerLink="/orders" class="p-button p-button-text text-primary-contrast mr-2">Mes Commandes</a>
-      <a routerLink="/orders/new" class="p-button p-button-text text-primary-contrast mr-2">Nouvelle Commande</a>
+      <a *ngIf="!isAdmin()" routerLink="/orders" class="p-button p-button-text text-primary-contrast mr-2">Mes
+        Commandes</a>
+      <a *ngIf="!isAdmin()" routerLink="/orders/new" class="p-button p-button-text text-primary-contrast mr-2">Nouvelle
+        Commande</a>
       <a *ngIf="isAdmin()" routerLink="/admin" class="p-button p-button-text text-primary-contrast mr-2">Admin</a>
       <p-button label="Déconnexion" icon="pi pi-sign-out" (onClick)="logout()"
         styleClass="p-button-text text-primary-contrast"></p-button>

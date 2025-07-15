@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -9,6 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { OrderStatsComponent } from './order-stats/order-stats.component';
 
 @Component({
   selector: 'lao-admin',
@@ -20,7 +21,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     ButtonModule,
     DialogModule,
     ToastModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    OrderStatsComponent
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './admin.component.html',
@@ -59,8 +61,14 @@ export class AdminComponent implements OnInit {
   }
 
   validateOrder(order: any): void {
+    const summary = `
+      <p><b>Date:</b> ${new Date(order.date).toLocaleDateString()}</p>
+      <p><b>Identité:</b> ${order.username}</p>
+      <p><b>Articles:</b> ${order.articles}</p>
+    `;
+
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir valider cette commande ?',
+      message: 'Êtes-vous sûr de vouloir valider cette commande ?' + summary,
       header: 'Confirmation de validation',
       icon: 'pi pi-info-circle',
       accept: () => {
@@ -79,8 +87,14 @@ export class AdminComponent implements OnInit {
   }
 
   refuseOrder(order: any): void {
+    const summary = `
+      <p><b>Date:</b> ${new Date(order.date).toLocaleDateString()}</p>
+      <p><b>Identité:</b> ${order.username}</p>
+      <p><b>Articles:</b> ${order.articles}</p>
+    `;
+
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir refuser cette commande ?',
+      message: 'Êtes-vous sûr de vouloir refuser cette commande ?' + summary,
       header: 'Confirmation de refus',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

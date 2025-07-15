@@ -35,7 +35,7 @@
 <p-dialog header="Détails de la Commande" [(visible)]="displayDialog" [modal]="true" [style]="{ width: '50vw' }"
     [draggable]="false" [resizable]="false">
     <div *ngIf="selectedOrder">
-        <p><b>Date:</b> {{ selectedOrder.date | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p><b>Date:</b> {{ selectedOrder.date | date:'dd/MM/yyyy' }}</p>
         <p><b>Username:</b> {{ selectedOrder.username }}</p>
         <p><b>Articles:</b> {{ selectedOrder.articles }}</p>
         <p><b>Statut:</b> {{ selectedOrder.status }}</p>
