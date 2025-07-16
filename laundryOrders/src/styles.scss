@@ -17,6 +17,10 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+body {
+    background: light-dark(var(--p-zinc-100), rgb(28, 27, 34));
+}
+
 * {
     box-sizing: border-box;
 }
@@ -32,9 +36,29 @@ body {
 }
 
 #dark-mode-toggle {
+
+    &.p-togglebutton,
+    &.p-togglebutton-checked {
+        background-color: transparent;
+        border: transparent;
+
+        &:hover {
+            background-color: color-mix(in srgb, var(--p-primary-color) 15%, transparent);
+            border: inherit;
+        }
+    }
+
+    .pi {
+        line-height: 1.5;
+    }
+
     .p-togglebutton-label {
         display: none;
     }
+}
+
+#logout button {
+    border: 1px solid var(--p-button-primary-border-color);
 }
 
 .text-warning {

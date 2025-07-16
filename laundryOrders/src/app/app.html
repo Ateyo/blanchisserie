@@ -1,22 +1,25 @@
 <p-toolbar styleClass="bg-primary text-primary-contrast text-primary-contrast text-primary-contrast rounded-none!">
-  <div class="p-toolbar-group-start">
-    <a routerLink="/" class="p-button p-button-text text-primary-contrast">Blanchisserie</a>
+  <div>
+    <a routerLink="/" class="p-button p-button-text text-primary-contrast"><b class="text-2xl">Blanchisserie</b></a>
   </div>
 
-  <div class="p-toolbar-group-end">
+  <div>
     <ng-container *ngIf="authService.isLoggedIn(); else loggedOut">
-      <a *ngIf="!isAdmin()" routerLink="/orders" class="p-button p-button-text text-primary-contrast mr-2">Mes
-        Commandes</a>
-      <a *ngIf="!isAdmin()" routerLink="/orders/new" class="p-button p-button-text text-primary-contrast mr-2">Nouvelle
-        Commande</a>
+      <div class="hidden sm:inline">
+        <a *ngIf="!isAdmin()" routerLink="/orders/new"
+          class="p-button p-button-text text-primary-contrast mr-2">Nouvelle
+          Commande</a>
+        <a *ngIf="!isAdmin()" routerLink="/orders" class="p-button p-button-text text-primary-contrast mr-2">Mes
+          Commandes</a>
+      </div>
       <a *ngIf="isAdmin()" routerLink="/admin" class="p-button p-button-text text-primary-contrast mr-2">Admin</a>
       <p-toggle-button id="dark-mode-toggle" offIcon="pi pi-sun" onIcon="pi pi-moon"
         styleClass="p-button-text text-primary-contrast mr-2" [(ngModel)]="checked" (onChange)="toggleDarkMode()" />
       <p-button label="Déconnexion" id="logout" icon="pi pi-sign-out" (onClick)="logout()"
-        styleClass="p-button-text text-primary-contrast"></p-button>
+        styleClass="p-button-text text-primary-contrast" variant="outlined"></p-button>
     </ng-container>
     <ng-template #loggedOut>
-      <a routerLink="/login" class="p-button p-button-text text-primary-contrast">Connexion</a>
+      <a routerLink="/login" class="p-button p-button-text text-primary-contrast" variant="outlined">Connexion</a>
     </ng-template>
   </div>
 </p-toolbar>
