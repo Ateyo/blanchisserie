@@ -1,11 +1,55 @@
 <p-card header="Gestion des Commandes" id="manage-orders" class="rounded-sm">
-    <p-table [value]="orders" [paginator]="true" [rows]="10" [tableStyle]="{'min-width': '50rem'}">
+    <p-table #dt1 [value]="orders" [paginator]="true" [rows]="10" [tableStyle]="{'min-width': '50rem'}"
+        [globalFilterFields]="['date', 'username', 'articles', 'status']" [sortField]="'date'" [sortMode]="'single'">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-row justify-between">
+                <p-button type="button" icon="pi pi-filter-slash" label="Nettoyer filtres" (click)="clear(dt1)" />
+                <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search mr-2"></i>
+                    <input pInputText type="text" #searchInput (input)="dt1.filterGlobal(searchInput.value, 'contains')"
+                        placeholder="Rechercher mot clé" />
+                </span>
+            </div>
+        </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th>Date</th>
-                <th>Identité</th>
-                <th>Articles</th>
-                <th>Statut</th>
+                <th pSortableColumn="date">
+                    <div class="flex justify-between items-center">
+                        <div>Date</div>
+                        <div class="flex">
+                            <p-sortIcon field="date"></p-sortIcon>
+                            <p-columnFilter type="date" field="date" display="menu"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+                <th pSortableColumn="username">
+                    <div class="flex justify-between items-center">
+                        <div>Identité</div>
+
+                        <div class="flex">
+                            <p-sortIcon field="username"></p-sortIcon>
+                            <p-columnFilter type="text" field="username" display="menu"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+                <th pSortableColumn="articles">
+                    <div class="flex justify-between items-center">
+                        <div>Articles</div>
+                        <div class="flex">
+                            <p-sortIcon field="articles"></p-sortIcon>
+                            <p-columnFilter type="text" field="articles" display="menu"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+                <th pSortableColumn="status">
+                    <div class="flex justify-between items-center">
+                        <div>Statut</div>
+                        <div class="flex">
+                            <p-sortIcon field="status"></p-sortIcon>
+                            <p-columnFilter type="text" field="status" display="menu"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
                 <th>Actions</th>
             </tr>
         </ng-template>
@@ -15,13 +59,20 @@
                 <td>{{ order.username }}</td>
                 <td>{{ order.articles }}</td>
                 <td>{{ order.status }}</td>
-                <td class="grid grid-cols-3 gap-2">
-                    <p-button icon="pi pi-eye" (onClick)="showOrderDetails(order)" title="Voir Détails"
-                        styleClass="p-button-sm p-button-info"></p-button>
-                    <p-button *ngIf="order.status === 'En attente'" icon="pi pi-check" (onClick)="validateOrder(order)"
-                        styleClass="p-button-sm p-button-success" title="Valider la Commande"></p-button>
-                    <p-button *ngIf="order.status === 'En attente'" icon="pi pi-times" (onClick)="refuseOrder(order)"
-                        styleClass="p-button-sm p-button-danger" title="Refuser la Commande"></p-button>
+                <td>
+                    <p-buttongroup>
+                        <p-button icon="pi pi-eye" (onClick)="showOrderDetails(order)" title="Voir Détails"
+                            styleClass="p-button-sm p-button-secondary"></p-button>
+                        <p-button *ngIf="order.status === 'En attente'" icon="pi pi-check"
+                            (onClick)="validateOrder(order)" styleClass="p-button-sm p-button-success"
+                            title="Valider la Commande"></p-button>
+                        <p-button *ngIf="order.status === 'En attente'" icon="pi pi-times"
+                            (onClick)="refuseOrder(order)" styleClass="p-button-sm p-button-danger"
+                            title="Refuser la Commande"></p-button>
+                        <p-button *ngIf="order.status === 'Validée'" icon="pi pi-check-circle"
+                            (onClick)="completeOrder(order)" styleClass="p-button-sm p-button-info"
+                            title="Terminer la Commande"></p-button>
+                    </p-buttongroup>
                 </td>
             </tr>
         </ng-template>
@@ -37,7 +88,7 @@
     [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
     <div *ngIf="selectedOrder">
         <p><b>Date:</b> {{ selectedOrder.date | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p><b>Identité:</b> {{ selectedOrder.identityName }}</p>
+        <p><b>Identité:</b> {{ selectedOrder.username }}</p>
         <p><b>Articles:</b> {{ selectedOrder.articles }}</p>
         <p><strong>Status:</strong> {{ selectedOrder.status }}</p>
         <p><strong>Motif:</strong> {{ selectedOrder.motif }}</p>

@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -7,10 +7,19 @@ import { CardModule } from 'primeng/card';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
+interface RawOrderStats {
+  total: number;
+  pending: number;
+  validated: number;
+  completed: number;
+  refused: number;
+}
+
 interface OrderStats {
   total: number;
   pending: number;
   validated: number;
+  finished: number;
 }
 
 @Component({
@@ -22,17 +31,22 @@ interface OrderStats {
 })
 export class OrderStatsComponent implements OnInit {
   stats: OrderStats | null = null;
-
-  constructor(private http: HttpClient, private messageService: MessageService) { }
+  private http = inject(HttpClient);
+  private messageService = inject(MessageService);
 
   ngOnInit(): void {
     this.loadStats();
   }
 
   loadStats(): void {
-    this.http.get<OrderStats>(`${environment.apiUrl}/orders/stats`).subscribe({
+    this.http.get<RawOrderStats>(`${environment.apiUrl}/orders/stats`).subscribe({
       next: (data) => {
-        this.stats = data;
+        this.stats = {
+          total: data.total,
+          pending: data.pending,
+          validated: data.validated,
+          finished: data.completed + data.refused,
+        };
       },
       error: (err) => {
         console.error('Error fetching order stats:', err);

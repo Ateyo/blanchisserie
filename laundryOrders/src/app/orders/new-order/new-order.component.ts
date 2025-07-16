@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -14,7 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { Order } from '../../shared/models/order.model';
 
 @Component({
-  selector: 'app-new-order',
+  selector: 'lao-new-order',
   standalone: true,
   imports: [
     CommonModule,
@@ -33,12 +33,12 @@ import { Order } from '../../shared/models/order.model';
 export class NewOrderComponent {
   orderForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private http: HttpClient,
-    private router: Router,
-    private messageService: MessageService
-  ) {
+  private fb = inject(FormBuilder);
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private messageService = inject(MessageService);
+
+  constructor() {
     this.orderForm = this.fb.group({
       date: [null, Validators.required],
       articles: ['', Validators.required],
@@ -54,8 +54,8 @@ export class NewOrderComponent {
     }
 
     const orderData: Order = {
-      ...this.orderForm.value,
-      date: this.orderForm.value.date.toISOString() // Format date for backend
+      ...this.orderForm.value as Order,
+      date: (this.orderForm.value.date as Date).toISOString() // Format date for backend
     };
 
     this.http.post(`${environment.apiUrl}/orders`, orderData).subscribe({

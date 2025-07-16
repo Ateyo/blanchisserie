@@ -1,14 +1,17 @@
-import { Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
-@Injectable({ providedIn: 'root' })
+interface TokenVerificationResponse {
+  valid: boolean;
+}
+
 export class AuthService {
     private readonly tokenKey = 'jwt_token';
     private readonly roleKey = 'user_role';
-
-    constructor(private http: HttpClient, private router: Router) { }
+    private http = inject(HttpClient);
+    private router = inject(Router);
 
     login(username: string, password: string) {
         return this.http.post<{ token: string }>(
@@ -61,8 +64,8 @@ export class AuthService {
             return;
         }
 
-        this.http.get(`${environment.apiUrl}/auth/verify-token`).subscribe({
-            next: (res: any) => {
+        this.http.get<TokenVerificationResponse>(`${environment.apiUrl}/auth/verify-token`).subscribe({
+            next: (res) => {
                 if (!res.valid) {
                     this.logout();
                 }

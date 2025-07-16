@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router, NavigationEnd } from '@angular/router';
@@ -11,7 +11,9 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { Order } from '../shared/models/order.interface';
 
+import { Table } from 'primeng/table';
 @Component({
   selector: 'lao-orders',
   standalone: true,
@@ -28,15 +30,15 @@ import { filter } from 'rxjs/operators';
   styleUrl: './orders.scss'
 })
 export class OrdersComponent implements OnInit, OnDestroy {
-  orders: any[] = [];
-  selectedOrder: any | null = null;
-  displayDialog: boolean = false;
+  orders: Order[] = [];
+  selectedOrder: Order | null = null;
+  displayDialog = false;
   private routerSubscription: Subscription;
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private messageService = inject(MessageService);
 
   constructor(
-    private http: HttpClient,
-    private router: Router,
-    private messageService: MessageService
   ) {
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd && event.urlAfterRedirects === '/orders')
@@ -56,7 +58,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   loadOrders(): void {
-    this.http.get<any[]>(`${environment.apiUrl}/orders/mine`).subscribe({
+    this.http.get<Order[]>(`${environment.apiUrl}/orders/mine`).subscribe({
       next: (data) => {
         this.orders = data;
       },
@@ -67,9 +69,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
     });
   }
 
-  showOrderDetails(order: any): void {
+  showOrderDetails(order: Order): void {
     this.selectedOrder = order;
     this.displayDialog = true;
+  }
+
+  clear(table: Table): void {
+    table.clear();
   }
 
   createNewOrder(): void {

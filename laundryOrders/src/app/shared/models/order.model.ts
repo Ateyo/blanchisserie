@@ -1,9 +1,11 @@
+import { User } from './user.interface';
+
 export interface Order {
   id: number;
   userId: number;
-  user?: any; // Or define a User interface if needed
+  user?: User;
   username?: string;
-  date?: Date;
+  date?: string;
   articles: string;
   motif?: string;
   commentaire?: string;

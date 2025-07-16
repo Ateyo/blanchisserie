@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterOutlet, RouterLink } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { RouterOutlet, RouterLink } from '@angular/router';
 import { AuthService } from './shared/services/auth.service';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { ThemeService } from './shared/services/theme.service';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-root',
+  selector: 'lao-root',
   standalone: true,
   imports: [RouterOutlet, RouterLink, ToolbarModule, ButtonModule, CommonModule, FormsModule, ToggleButtonModule],
   templateUrl: './app.html',
@@ -17,8 +16,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class App implements OnInit {
   protected title = 'laundryOrder';
-  checked: boolean = false;
-  constructor(public authService: AuthService, private router: Router, private themeService: ThemeService) { }
+  checked = false;
+  public authService = inject(AuthService);
 
   ngOnInit(): void {
     this.authService.verifyToken();

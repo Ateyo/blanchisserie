@@ -9,6 +9,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import lara from '@primeuix/themes/lara';
+import { AuthService } from './shared/services/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,6 +30,7 @@ export const appConfig: ApplicationConfig = {
     }),
     importProvidersFrom(ToastModule, ConfirmDialogModule),
     MessageService,
-    ConfirmationService
+    ConfirmationService,
+    AuthService
   ]
 };

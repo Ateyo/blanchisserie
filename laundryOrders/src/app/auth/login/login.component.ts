@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-login',
+    selector: 'lao-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
     standalone: true,
@@ -28,11 +28,11 @@ export class LoginComponent {
     error = '';
     form: FormGroup;
 
-    constructor(
-        private fb: FormBuilder,
-        private auth: AuthService,
-        private router: Router
-    ) {
+    private fb = inject(FormBuilder);
+    private auth = inject(AuthService);
+    private router = inject(Router);
+
+    constructor() {
         this.form = this.fb.group({
             username: ['', Validators.required],
             password: ['', Validators.required],
