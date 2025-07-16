@@ -62,6 +62,10 @@ body {
     }
 }
 
+.p-card {
+    border-radius: var(--p-border-radius-lg);
+}
+
 #logout button {
     border: 1px solid var(--p-button-primary-border-color);
 }
