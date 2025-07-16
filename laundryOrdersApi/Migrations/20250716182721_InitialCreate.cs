@@ -33,9 +33,9 @@ namespace laundryOrdersApi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Articles = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdentityName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Motif = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Commentaire = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
