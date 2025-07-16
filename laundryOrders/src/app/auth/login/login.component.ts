@@ -47,7 +47,11 @@ export class LoginComponent {
         this.auth.login(username!, password!).subscribe({
             next: (res) => {
                 this.auth.saveToken(res.token);
-                this.router.navigate(['/orders']);
+                if (this.auth.getRole() === 'Admin') {
+                    this.router.navigate(['/admin']);
+                } else {
+                    this.router.navigate(['/orders']);
+                }
             },
             error: () => {
                 this.error = 'Invalid credentials';

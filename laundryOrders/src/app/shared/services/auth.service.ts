@@ -53,4 +53,23 @@ export class AuthService {
     isLoggedIn(): boolean {
         return !!this.getToken();
     }
+
+    verifyToken() {
+        const token = this.getToken();
+        if (!token) {
+            this.logout();
+            return;
+        }
+
+        this.http.get(`${environment.apiUrl}/auth/verify-token`).subscribe({
+            next: (res: any) => {
+                if (!res.valid) {
+                    this.logout();
+                }
+            },
+            error: () => {
+                this.logout();
+            }
+        });
+    }
 }

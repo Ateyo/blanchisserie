@@ -1,30 +1,30 @@
 <p-card header="Passer une nouvelle commande">
   <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-    <div class="p-fluid p-formgrid p-grid">
-      <div class="p-field p-col-12 md-6">
+    <div class="flex flex-col w-full sm:w-3/5 mx-auto">
+      <div class="p-field">
         <label for="date">Date</label>
-        <p-datepicker id="date" formControlName="date" [showIcon]="true" inputId="icon"
-          dateFormat="dd/mm/yy"></p-datepicker>
+        <p-datepicker id="date" formControlName="date" inputId="icon" dateFormat="dd/mm/yy"></p-datepicker>
         <small *ngIf="orderForm.get('date')?.invalid && orderForm.get('date')?.dirty" class="p-error">Date est
           obligatoire.</small>
       </div>
-      <div class="p-field p-col-12">
+      <div class="p-field">
         <label for="articles">Articles (ex: 3 chemises, 2 pantalons)</label>
         <textarea pInputTextarea id="articles" formControlName="articles" rows="3"></textarea>
         <small *ngIf="orderForm.get('articles')?.invalid && orderForm.get('articles')?.dirty" class="p-error">Articles
           est obligatoire.</small>
       </div>
-      <div class="p-field p-col-12">
+      <div class="p-field">
         <label for="motif">Motif (Facultatif)</label>
         <input pInputText id="motif" type="text" formControlName="motif">
       </div>
-      <div class="p-field p-col-12">
+      <div class="p-field">
         <label for="commentaire">Commentaire (Facultatif)</label>
         <textarea pInputTextarea id="commentaire" formControlName="commentaire" rows="3"></textarea>
       </div>
+      <p-button class="self-end" label="Passer Commande" icon="pi pi-check" type="submit"
+        [disabled]="orderForm.invalid"></p-button>
     </div>
 
-    <p-button label="Passer Commande" icon="pi pi-check" type="submit" [disabled]="orderForm.invalid"></p-button>
   </form>
 </p-card>
 

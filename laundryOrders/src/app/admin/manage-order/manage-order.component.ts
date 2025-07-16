@@ -11,7 +11,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'lao-admin',
+  selector: 'lao-manage-order',
   standalone: true,
   imports: [
     CommonModule,
@@ -23,10 +23,10 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     ConfirmDialogModule
   ],
   providers: [ConfirmationService, MessageService],
-  templateUrl: './admin.component.html',
-  styleUrl: './admin.component.scss'
+  templateUrl: './manage-order.component.html',
+  styleUrls: ['./manage-order.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class ManageOrderComponent implements OnInit {
   orders: any[] = [];
   selectedOrder: any | null = null;
   displayDialog: boolean = false;
@@ -59,8 +59,14 @@ export class AdminComponent implements OnInit {
   }
 
   validateOrder(order: any): void {
+    const summary = `
+      <p><b>Date:</b> ${new Date(order.date).toLocaleDateString()}</p>
+      <p><b>Identité:</b> ${order.username}</p>
+      <p><b>Articles:</b> ${order.articles}</p>
+    `;
+
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir valider cette commande ?',
+      message: 'Êtes-vous sûr de vouloir valider cette commande ?' + summary,
       header: 'Confirmation de validation',
       icon: 'pi pi-info-circle',
       accept: () => {
@@ -79,8 +85,14 @@ export class AdminComponent implements OnInit {
   }
 
   refuseOrder(order: any): void {
+    const summary = `
+      <p><b>Date:</b> ${new Date(order.date).toLocaleDateString()}</p>
+      <p><b>Identité:</b> ${order.username}</p>
+      <p><b>Articles:</b> ${order.articles}</p>
+    `;
+
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir refuser cette commande ?',
+      message: 'Êtes-vous sûr de vouloir refuser cette commande ?' + summary,
       header: 'Confirmation de refus',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

@@ -1,10 +1,14 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@use "tailwindcss";
 @import "primeicons/primeicons.css";
 
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --p-form-field-border-radius: var(--p-border-radius-lg);
+    ;
+    --warning: #ffbb00;
+    --error: #db4437;
+    --p-border-radius-sm: 0.5rem !important;
+}
 
 html,
 body {
@@ -19,4 +23,32 @@ body {
 
 .p-datatable .p-datatable-tbody>tr:nth-child(odd) {
     background-color: rgba(249, 249, 249, 0.05); // A light grey color
+}
+
+.p-inputtext,
+.p-textarea,
+.p-datepicker {
+    width: 100%;
+}
+
+#dark-mode-toggle {
+    .p-togglebutton-label {
+        display: none;
+    }
+}
+
+.text-warning {
+    color: var(--warning);
+}
+
+.bg-warning {
+    background-color: var(--warning);
+}
+
+.text-error {
+    color: var(--error);
+}
+
+.bg-error {
+    background-color: var(--error);
 }

@@ -1,0 +1,17 @@
+<p-card class="rounded-sm" header="Statistiques des commandes">
+    <div class="grid grid-cols-3 gap-4">
+        <div class="col-span-1 text-center text-warning ">
+            <div class="text-2xl font-bold">{{ stats?.pending }}</div>
+            <div>En attente</div>
+        </div>
+        <div class="col-span-1 text-center">
+            <div class="text-2xl font-bold">{{ stats?.validated }}</div>
+            <div>Validées</div>
+        </div>
+        <div class="col-span-1 text-center">
+            <div class="text-xl font-bold">{{ stats?.total }}</div>
+            <div>Total</div>
+        </div>
+    </div>
+</p-card>
+<p-toast></p-toast>

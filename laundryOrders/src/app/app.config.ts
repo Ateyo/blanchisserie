@@ -8,7 +8,7 @@ import { providePrimeNG } from 'primeng/config';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import Material from '@primeuix/themes/material';
+import lara from '@primeuix/themes/lara';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,7 +21,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Material
+        preset: lara,
+        options: {
+          darkModeSelector: '.my-app-dark'
+        }
       }
     }),
     importProvidersFrom(ToastModule, ConfirmDialogModule),
