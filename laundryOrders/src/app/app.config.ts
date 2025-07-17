@@ -1,4 +1,9 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection,
+  importProvidersFrom,
+} from '@angular/core';
 import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
@@ -8,24 +13,27 @@ import { providePrimeNG } from 'primeng/config';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import Material from '@primeuix/themes/material';
+import lara from '@primeuix/themes/lara';
+import { AuthService } from './shared/services/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(
-      withInterceptors([jwtInterceptor])
-    ),
+    provideHttpClient(withInterceptors([jwtInterceptor])),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Material
-      }
+        preset: lara,
+        options: {
+          darkModeSelector: '.my-app-dark',
+        },
+      },
     }),
     importProvidersFrom(ToastModule, ConfirmDialogModule),
     MessageService,
-    ConfirmationService
-  ]
+    ConfirmationService,
+    AuthService,
+  ],
 };

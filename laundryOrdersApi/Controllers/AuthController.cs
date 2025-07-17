@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using LaundryOrdersApi.Data;
 using LaundryOrdersApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LaundryOrdersApi.Controllers
 {
@@ -14,26 +15,25 @@ namespace LaundryOrdersApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly LaundryContext _context;
+        private readonly IConfiguration _configuration;
 
-        private readonly ILogger<AuthController> _logger;
-
-        public AuthController(LaundryContext context, ILogger<AuthController> logger)
+        public AuthController(LaundryContext context, IConfiguration configuration)
         {
             _context = context;
-            _logger = logger;
+            _configuration = configuration;
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            _logger.LogInformation("Login attempt for user {Username}", request.Username);
             var user = _context.Users.SingleOrDefault(u => u.Username == request.Username);
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
-                _logger.LogWarning("Invalid credentials for user {Username}", request.Username);
                 return Unauthorized();
             }
-            var key = Encoding.UTF8.GetBytes("0bwnYtzc9RWwP69CC6KoV2IKgi54h25y");
+
+            var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is not configured.");
+            var key = Encoding.UTF8.GetBytes(jwtKey);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -43,6 +43,7 @@ namespace LaundryOrdersApi.Controllers
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
+                Issuer = _configuration["Jwt:Issuer"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -51,6 +52,13 @@ namespace LaundryOrdersApi.Controllers
             var jwt = tokenHandler.WriteToken(token);
 
             return Ok(new { Token = jwt });
+        }
+
+        [HttpGet("verify-token")]
+        [Authorize]
+        public IActionResult VerifyToken()
+        {
+            return Ok(new { valid = true });
         }
     }
 }

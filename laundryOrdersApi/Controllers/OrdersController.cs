@@ -56,6 +56,19 @@ namespace LaundryOrdersApi.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet("stats")]
+        public IActionResult GetOrderStats()
+        {
+            var total = _context.Orders.Count();
+            var pending = _context.Orders.Count(o => o.Status == "En attente");
+            var validated = _context.Orders.Count(o => o.Status == "Validée");
+            var completed = _context.Orders.Count(o => o.Status == "Terminée");
+            var refused = _context.Orders.Count(o => o.Status == "Refusée");
+
+            return Ok(new { total, pending, validated, completed, refused });
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}/validate")]
         public IActionResult ValidateOrder(int id)
         {
@@ -77,6 +90,19 @@ namespace LaundryOrdersApi.Controllers
                 return NotFound();
 
             order.Status = "Refusée";
+            _context.SaveChanges();
+            return Ok(order);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}/complete")]
+        public IActionResult CompleteOrder(int id)
+        {
+            var order = _context.Orders.FirstOrDefault(o => o.Id == id);
+            if (order == null)
+                return NotFound();
+
+            order.Status = "Terminée";
             _context.SaveChanges();
             return Ok(order);
         }

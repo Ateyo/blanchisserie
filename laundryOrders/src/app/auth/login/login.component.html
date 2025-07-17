@@ -1,20 +1,25 @@
 <div class="login-container">
-    <p-card header="Login" [style]="{ width: '360px' }">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-fluid">
-            <div class="p-field">
-                <span class="p-float-label">
-                    <input type="text" id="username" pInputText formControlName="username">
-                    <label for="username">Username</label>
-                </span>
-            </div>
-            <div class="p-field">
-                <span class="p-float-label">
-                    <p-password id="password" formControlName="password" [toggleMask]="true"></p-password>
-                    <label for="password">Password</label>
-                </span>
-            </div>
-            <p-button label="Login" type="submit" [disabled]="form.invalid"></p-button>
-            <div *ngIf="error" class="message message-error">{{ error }}</div>
-        </form>
-    </p-card>
+  <p-card header="Login" [style]="{ width: '360px' }" data-pc-name="card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-fluid">
+      <div class="p-field">
+        <span class="p-float-label">
+          <input type="text" id="username" pInputText formControlName="username" />
+          <label for="username">Username</label>
+        </span>
+      </div>
+      <div class="p-field">
+        <span class="p-float-label">
+          <p-password
+            id="password"
+            class="w-full"
+            formControlName="password"
+            [toggleMask]="true"
+          ></p-password>
+          <label for="password">Password</label>
+        </span>
+      </div>
+      <p-button label="Login" type="submit" [disabled]="form.invalid"></p-button>
+      <div *ngIf="error" class="message message-error">{{ error }}</div>
+    </form>
+  </p-card>
 </div>

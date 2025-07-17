@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
 
-using LaundryOrdersApi.Models; // Adjust namespace as needed
+using LaundryOrdersApi.Models;
 
 namespace LaundryOrdersApi.Data
 {

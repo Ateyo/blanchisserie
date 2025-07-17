@@ -1,5 +1,11 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
@@ -9,49 +15,52 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    standalone: true,
-    imports: [
-        CardModule,
-        CommonModule,
-        InputTextModule,
-        PasswordModule,
-        ButtonModule,
-        ReactiveFormsModule,
-        FormsModule
-    ],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [
+    CardModule,
+    CommonModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
 })
 export class LoginComponent {
+  error = '';
+  form: FormGroup;
 
-    error = '';
-    form: FormGroup;
+  private fb = inject(FormBuilder);
+  private auth = inject(AuthService);
+  private router = inject(Router);
 
-    constructor(
-        private fb: FormBuilder,
-        private auth: AuthService,
-        private router: Router
-    ) {
-        this.form = this.fb.group({
-            username: ['', Validators.required],
-            password: ['', Validators.required],
-        });
-    }
+  constructor() {
+    this.form = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
 
-    onSubmit() {
-        if (this.form.invalid) return;
+  onSubmit() {
+    if (this.form.invalid) return;
 
-        const { username, password } = this.form.value;
+    const { username, password } = this.form.value;
 
-        this.auth.login(username!, password!).subscribe({
-            next: (res) => {
-                this.auth.saveToken(res.token);
-                this.router.navigate(['/orders']);
-            },
-            error: () => {
-                this.error = 'Invalid credentials';
-            }
-        });
-    }
+    this.auth.login(username!, password!).subscribe({
+      next: (res) => {
+        this.auth.saveToken(res.token);
+        if (this.auth.getRole() === 'Admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/orders']);
+        }
+      },
+      error: () => {
+        this.error = 'Invalid credentials';
+      },
+    });
+  }
 }

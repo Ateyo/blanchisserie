@@ -7,9 +7,9 @@ EXPOSE 5000
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
+
 RUN dotnet restore
 RUN dotnet publish -c Release -o /app/publish
-
 # Final image setup, using the base image and copying the published output
 FROM base AS final
 WORKDIR /app
