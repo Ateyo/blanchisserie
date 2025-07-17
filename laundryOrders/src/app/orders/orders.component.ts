@@ -15,19 +15,12 @@ import { Order } from '../shared/models/order.interface';
 
 import { Table } from 'primeng/table';
 @Component({
-  selector: 'lao-orders',
+  selector: 'app-orders',
   standalone: true,
-  imports: [
-    CommonModule,
-    CardModule,
-    TableModule,
-    ButtonModule,
-    DialogModule,
-    ToastModule
-  ],
+  imports: [CommonModule, CardModule, TableModule, ButtonModule, DialogModule, ToastModule],
   providers: [MessageService],
   templateUrl: './orders.html',
-  styleUrl: './orders.scss'
+  styleUrl: './orders.scss',
 })
 export class OrdersComponent implements OnInit, OnDestroy {
   orders: Order[] = [];
@@ -38,13 +31,14 @@ export class OrdersComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private messageService = inject(MessageService);
 
-  constructor(
-  ) {
-    this.routerSubscription = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd && event.urlAfterRedirects === '/orders')
-    ).subscribe(() => {
-      this.loadOrders();
-    });
+  constructor() {
+    this.routerSubscription = this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd && event.urlAfterRedirects === '/orders')
+      )
+      .subscribe(() => {
+        this.loadOrders();
+      });
   }
 
   ngOnInit(): void {
@@ -64,8 +58,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.error('Error fetching orders:', err);
-        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de charger les commandes.' });
-      }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Impossible de charger les commandes.',
+        });
+      },
     });
   }
 

@@ -4,16 +4,10 @@ import { OrderStatsComponent } from './order-stats/order-stats.component';
 import { ManageOrderComponent } from './manage-order/manage-order.component';
 
 @Component({
-  selector: 'lao-admin',
+  selector: 'app-admin',
   standalone: true,
-  imports: [
-    CommonModule,
-    OrderStatsComponent,
-    ManageOrderComponent
-  ],
+  imports: [CommonModule, OrderStatsComponent, ManageOrderComponent],
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  styleUrls: ['./admin.component.scss'],
 })
-export class AdminComponent {
-
-}
+export class AdminComponent { }

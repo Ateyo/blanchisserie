@@ -1,43 +1,25 @@
-// @ts-check
-const eslint = require("@eslint/js");
-const tseslint = require("typescript-eslint");
-const angular = require("angular-eslint");
+import eslintConfigPrettier from 'eslint-config-prettier';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import eslintPluginPrettier from 'eslint-plugin-prettier';
+import { defineConfig } from 'eslint/config';
+import js from '@eslint/js';
 
-module.exports = tseslint.config(
+export default defineConfig([
   {
-    files: ["**/*.ts"],
-    extends: [
-      eslint.configs.recommended,
-      ...tseslint.configs.recommended,
-      ...tseslint.configs.stylistic,
-      ...angular.configs.tsRecommended,
-    ],
-    processor: angular.processInlineTemplates,
-    rules: {
-      "@angular-eslint/directive-selector": [
-        "error",
-        {
-          type: "attribute",
-          prefix: "lao",
-          style: "camelCase",
-        },
-      ],
-      "@angular-eslint/component-selector": [
-        "error",
-        {
-          type: "element",
-          prefix: "lao",
-          style: "kebab-case",
-        },
-      ],
+    files: ['**/*.js', '**/*.ts'],
+    plugins: {
+      'simple-import-sort': simpleImportSort,
+      'prettier': eslintPluginPrettier
     },
-  },
-  {
-    files: ["**/*.html"],
     extends: [
-      ...angular.configs.templateRecommended,
-      ...angular.configs.templateAccessibility,
+      js.configs.recommended,
+      'plugin:prettier/recommended'
     ],
-    rules: {},
-  }
-);
+    rules: {
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
+      'no-unused-vars': 'error'
+    }
+  },
+  eslintConfigPrettier
+]);

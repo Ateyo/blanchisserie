@@ -1,94 +1,114 @@
 <p-card>
-    <div class="flex flex-row justify-between pb-3">
-        <h2 class="text-xl font-bold">Mes Commandes</h2>
-        <p-button label="Nouvelle Commande" icon="pi pi-plus" (onClick)="createNewOrder()"></p-button>
-    </div>
+  <div class="flex flex-row justify-between pb-3">
+    <h2 class="text-xl font-bold">Mes Commandes</h2>
+    <p-button label="Nouvelle Commande" icon="pi pi-plus" (onClick)="createNewOrder()"></p-button>
+  </div>
 
-    <p-table #dt [value]="orders" [paginator]="true" [rows]="10" [tableStyle]="{'min-width': '50rem'}"
-        [globalFilterFields]="['date', 'username', 'articles', 'status']" [sortField]="'date'" [sortMode]="'single'">
-        <ng-template pTemplate="caption">
-            <div class="flex flex-row justify-between">
-                <p-button type="button" icon="pi pi-filter-slash" label="Clear" (click)="clear(dt)" />
-                <span class="p-input-icon-left ml-auto">
-                    <i class="pi pi-search mr-2"></i>
-                    <input pInputText type="text" #searchInput (input)="dt.filterGlobal(searchInput.value, 'contains')"
-                        placeholder="Search keyword" />
-                </span>
+  <p-table
+    #dt
+    [value]="orders"
+    [paginator]="true"
+    [rows]="10"
+    [tableStyle]="{'min-width': '50rem'}"
+    [globalFilterFields]="['date', 'username', 'articles', 'status']"
+    [sortField]="'date'"
+    [sortMode]="'single'"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex flex-row justify-between">
+        <p-button type="button" icon="pi pi-filter-slash" label="Clear" (click)="clear(dt)" />
+        <span class="p-input-icon-left ml-auto">
+          <i class="pi pi-search mr-2"></i>
+          <input
+            pInputText
+            type="text"
+            #searchInput
+            (input)="dt.filterGlobal(searchInput.value, 'contains')"
+            placeholder="Search keyword"
+          />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="date">
+          <div class="flex justify-between items-center">
+            <div>Date</div>
+            <div class="flex">
+              <p-sortIcon field="date"></p-sortIcon>
+              <p-columnFilter type="date" field="date" display="menu"></p-columnFilter>
             </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="date">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            Date</div>
-                        <div class="flex">
-                            <p-sortIcon field="date"></p-sortIcon>
-                            <p-columnFilter type="date" field="date" display="menu"></p-columnFilter>
-                        </div>
-                    </div>
-                </th>
-                <th pSortableColumn="username">
-                    <div class="flex justify-between items-center">
-                        <div>Username
-                        </div>
-                        <div class="flex">
-                            <p-sortIcon field="username"></p-sortIcon>
-                            <p-columnFilter type="text" field="username" display="menu"></p-columnFilter>
-                        </div>
-                    </div>
-                </th>
-                <th pSortableColumn="articles">
-                    <div class="flex justify-between items-center">
-                        <div>Articles</div>
-                        <div class="flex">
-                            <p-sortIcon field="articles"></p-sortIcon>
-                            <p-columnFilter type="text" field="articles" display="menu"></p-columnFilter>
-                        </div>
-                    </div>
-                </th>
-                <th pSortableColumn="status">
-                    <div class="flex justify-between items-center">
-                        <div>Statut
-                        </div>
-                        <div class="flex">
-                            <p-sortIcon field="status"></p-sortIcon>
-                            <p-columnFilter type="text" field="status" display="menu"></p-columnFilter>
-                        </div>
-                    </div>
-                </th>
-                <th>Actions</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-order>
-            <tr>
-                <td>{{ order.date | date:'dd/MM/yyyy' }}</td>
-                <td>{{ order.username }}</td>
-                <td>{{ order.articles }}</td>
-                <td>{{ order.status }}</td>
-                <td>
-                    <p-button icon="pi pi-eye" (onClick)="showOrderDetails(order)" styleClass="p-button-sm"></p-button>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="emptyMessage">
-            <tr>
-                <td colspan="4">Aucune commande trouvée.</td>
-            </tr>
-        </ng-template>
-    </p-table>
+          </div>
+        </th>
+        <th pSortableColumn="username">
+          <div class="flex justify-between items-center">
+            <div>Username</div>
+            <div class="flex">
+              <p-sortIcon field="username"></p-sortIcon>
+              <p-columnFilter type="text" field="username" display="menu"></p-columnFilter>
+            </div>
+          </div>
+        </th>
+        <th pSortableColumn="articles">
+          <div class="flex justify-between items-center">
+            <div>Articles</div>
+            <div class="flex">
+              <p-sortIcon field="articles"></p-sortIcon>
+              <p-columnFilter type="text" field="articles" display="menu"></p-columnFilter>
+            </div>
+          </div>
+        </th>
+        <th pSortableColumn="status">
+          <div class="flex justify-between items-center">
+            <div>Statut</div>
+            <div class="flex">
+              <p-sortIcon field="status"></p-sortIcon>
+              <p-columnFilter type="text" field="status" display="menu"></p-columnFilter>
+            </div>
+          </div>
+        </th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-order>
+      <tr>
+        <td>{{ order.date | date:'dd/MM/yyyy' }}</td>
+        <td>{{ order.username }}</td>
+        <td>{{ order.articles }}</td>
+        <td>{{ order.status }}</td>
+        <td>
+          <p-button
+            icon="pi pi-eye"
+            (onClick)="showOrderDetails(order)"
+            styleClass="p-button-sm"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptyMessage">
+      <tr>
+        <td colspan="4">Aucune commande trouvée.</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </p-card>
 
-<p-dialog header="Détails de la Commande" [(visible)]="displayDialog" [modal]="true" [style]="{ width: '50vw' }"
-    [draggable]="false" [resizable]="false">
-    <div *ngIf="selectedOrder">
-        <p><b>Date:</b> {{ selectedOrder.date | date:'dd/MM/yyyy' }}</p>
-        <p><b>Username:</b> {{ selectedOrder.username }}</p>
-        <p><b>Articles:</b> {{ selectedOrder.articles }}</p>
-        <p><b>Statut:</b> {{ selectedOrder.status }}</p>
-        <p *ngIf="selectedOrder.motif"><b>Motif:</b> {{ selectedOrder.motif }}</p>
-        <p *ngIf="selectedOrder.commentaire"><b>Commentaire:</b> {{ selectedOrder.commentaire }}</p>
-    </div>
+<p-dialog
+  header="Détails de la Commande"
+  [(visible)]="displayDialog"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div *ngIf="selectedOrder">
+    <p><b>Date:</b> {{ selectedOrder.date | date:'dd/MM/yyyy' }}</p>
+    <p><b>Username:</b> {{ selectedOrder.username }}</p>
+    <p><b>Articles:</b> {{ selectedOrder.articles }}</p>
+    <p><b>Statut:</b> {{ selectedOrder.status }}</p>
+    <p *ngIf="selectedOrder.motif"><b>Motif:</b> {{ selectedOrder.motif }}</p>
+    <p *ngIf="selectedOrder.commentaire"><b>Commentaire:</b> {{ selectedOrder.commentaire }}</p>
+  </div>
 </p-dialog>
 
 <p-toast></p-toast>

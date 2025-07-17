@@ -13,7 +13,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Order } from '../../shared/models/order.interface';
 import { Table } from 'primeng/table';
 @Component({
-  selector: 'lao-manage-order',
+  selector: 'app-manage-order',
   standalone: true,
   imports: [
     CommonModule,
@@ -23,10 +23,11 @@ import { Table } from 'primeng/table';
     DialogModule,
     ToastModule,
     ConfirmDialogModule,
-    ButtonGroup],
+    ButtonGroup,
+  ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './manage-order.component.html',
-  styleUrls: ['./manage-order.component.scss']
+  styleUrls: ['./manage-order.component.scss'],
 })
 export class ManageOrderComponent implements OnInit {
   orders: Order[] = [];
@@ -51,13 +52,17 @@ export class ManageOrderComponent implements OnInit {
     this.http.get<Order[]>(`${environment.apiUrl}/orders`).subscribe({
       next: (data) => {
         this.orders = data;
-        this.completedOrders = data.filter(order => order.status === 'Terminée');
-        this.refusedOrders = data.filter(order => order.status === 'Refusée');
+        this.completedOrders = data.filter((order) => order.status === 'Terminée');
+        this.refusedOrders = data.filter((order) => order.status === 'Refusée');
       },
       error: (err) => {
         console.error('Error fetching all orders:', err);
-        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de charger les commandes.' });
-      }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Impossible de charger les commandes.',
+        });
+      },
     });
   }
 
@@ -80,15 +85,23 @@ export class ManageOrderComponent implements OnInit {
       accept: () => {
         this.http.put(`${environment.apiUrl}/orders/${order.id}/validate`, {}).subscribe({
           next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Commande validée avec succès.' });
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Commande validée avec succès.',
+            });
             this.loadOrders();
           },
           error: (err) => {
             console.error('Error validating order:', err);
-            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la validation de la commande.' });
-          }
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Échec de la validation de la commande.',
+            });
+          },
         });
-      }
+      },
     });
   }
 
@@ -106,15 +119,23 @@ export class ManageOrderComponent implements OnInit {
       accept: () => {
         this.http.put(`${environment.apiUrl}/orders/${order.id}/refuse`, {}).subscribe({
           next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Commande refusée avec succès.' });
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Commande refusée avec succès.',
+            });
             this.loadOrders();
           },
           error: (err) => {
             console.error('Error refusing order:', err);
-            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Échec du refus de la commande.' });
-          }
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Échec du refus de la commande.',
+            });
+          },
         });
-      }
+      },
     });
   }
 
@@ -132,15 +153,23 @@ export class ManageOrderComponent implements OnInit {
       accept: () => {
         this.http.put(`${environment.apiUrl}/orders/${order.id}/complete`, {}).subscribe({
           next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Commande terminée avec succès.' });
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Commande terminée avec succès.',
+            });
             this.loadOrders();
           },
           error: (err) => {
             console.error('Error completing order:', err);
-            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la finalisation de la commande.' });
-          }
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Échec de la finalisation de la commande.',
+            });
+          },
         });
-      }
+      },
     });
   }
 }

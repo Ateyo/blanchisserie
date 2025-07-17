@@ -1,87 +1,85 @@
-@use "tailwindcss";
-@import "primeicons/primeicons.css";
+@use 'tailwindcss';
+@import 'primeicons/primeicons.css';
 
 /* You can add global styles to this file, and also import other style files */
 :root {
-    --p-form-field-border-radius: var(--p-border-radius-lg);
-    ;
-    --warning: #ffbb00;
-    --error: #db4437;
-    --success: #34a853;
-    --p-border-radius-sm: 0.5rem !important;
-    --p-button-danger-background: var(--error) !important;
-    --p-button-danger-border-color: var(--error) !important;
-    --p-button-success-background: var(--success) !important;
-    --p-button-success-border-color: var(--success) !important;
+  --p-form-field-border-radius: var(--p-border-radius-lg);
+  --warning: #ffbb00;
+  --error: #db4437;
+  --success: #34a853;
+  --p-border-radius-sm: 0.5rem !important;
+  --p-button-danger-background: var(--error) !important;
+  --p-button-danger-border-color: var(--error) !important;
+  --p-button-success-background: var(--success) !important;
+  --p-button-success-border-color: var(--success) !important;
 }
 
 html,
 body {
-    height: 100%;
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
+  height: 100%;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
-    background: light-dark(var(--p-zinc-100), rgb(28, 27, 34));
+  background: light-dark(var(--p-zinc-100), rgb(28, 27, 34));
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-.p-datatable .p-datatable-tbody>tr:nth-child(odd) {
-    background-color: rgba(249, 249, 249, 0.05); // A light grey color
+.p-datatable .p-datatable-tbody > tr:nth-child(odd) {
+  background-color: rgba(249, 249, 249, 0.05); // A light grey color
 }
 
 .p-inputtext,
 .p-textarea,
 .p-datepicker {
-    width: 100%;
+  width: 100%;
 }
 
 #dark-mode-toggle {
+  &.p-togglebutton,
+  &.p-togglebutton-checked {
+    background-color: transparent;
+    border: transparent;
 
-    &.p-togglebutton,
-    &.p-togglebutton-checked {
-        background-color: transparent;
-        border: transparent;
-
-        &:hover {
-            background-color: color-mix(in srgb, var(--p-primary-color) 15%, transparent);
-            border: inherit;
-        }
+    &:hover {
+      background-color: color-mix(in srgb, var(--p-primary-color) 15%, transparent);
+      border: inherit;
     }
+  }
 
-    .pi {
-        line-height: 1.5;
-    }
+  .pi {
+    line-height: 1.5;
+  }
 
-    .p-togglebutton-label {
-        display: none;
-    }
+  .p-togglebutton-label {
+    display: none;
+  }
 }
 
 .p-card {
-    border-radius: var(--p-border-radius-lg);
+  border-radius: var(--p-border-radius-lg);
 }
 
 #logout button {
-    border: 1px solid var(--p-button-primary-border-color);
+  border: 1px solid var(--p-button-primary-border-color);
 }
 
 .text-warning {
-    color: var(--warning);
+  color: var(--warning);
 }
 
 .bg-warning {
-    background-color: var(--warning);
+  background-color: var(--warning);
 }
 
 .text-error {
-    color: var(--error);
+  color: var(--error);
 }
 
 .bg-error {
-    background-color: var(--error);
+  background-color: var(--error);
 }

@@ -1,4 +1,9 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection,
+  importProvidersFrom,
+} from '@angular/core';
 import { jwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
@@ -16,21 +21,19 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(
-      withInterceptors([jwtInterceptor])
-    ),
+    provideHttpClient(withInterceptors([jwtInterceptor])),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
         preset: lara,
         options: {
-          darkModeSelector: '.my-app-dark'
-        }
-      }
+          darkModeSelector: '.my-app-dark',
+        },
+      },
     }),
     importProvidersFrom(ToastModule, ConfirmDialogModule),
     MessageService,
     ConfirmationService,
-    AuthService
-  ]
+    AuthService,
+  ],
 };

@@ -1,4 +1,3 @@
-
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -23,7 +22,7 @@ interface OrderStats {
 }
 
 @Component({
-  selector: 'lao-order-stats',
+  selector: 'app-order-stats',
   standalone: true,
   imports: [CommonModule, CardModule, ToastModule],
   providers: [MessageService],

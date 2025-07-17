@@ -7,8 +7,7 @@
     <ng-container *ngIf="authService.isLoggedIn(); else loggedOut">
       <div class="hidden sm:inline">
         <a *ngIf="!isAdmin()" routerLink="/orders/new"
-          class="p-button p-button-text text-primary-contrast mr-2">Nouvelle
-          Commande</a>
+          class="p-button p-button-text text-primary-contrast mr-2">Nouvelle Commande</a>
         <a *ngIf="!isAdmin()" routerLink="/orders" class="p-button p-button-text text-primary-contrast mr-2">Mes
           Commandes</a>
       </div>

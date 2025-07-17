@@ -8,11 +8,19 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'lao-root',
+  selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, ToolbarModule, ButtonModule, CommonModule, FormsModule, ToggleButtonModule],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    ToolbarModule,
+    ButtonModule,
+    CommonModule,
+    FormsModule,
+    ToggleButtonModule,
+  ],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App implements OnInit {
   protected title = 'laundryOrder';

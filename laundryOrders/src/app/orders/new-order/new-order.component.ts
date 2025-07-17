@@ -14,7 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { Order } from '../../shared/models/order.model';
 
 @Component({
-  selector: 'lao-new-order',
+  selector: 'app-new-order',
   standalone: true,
   imports: [
     CommonModule,
@@ -24,11 +24,11 @@ import { Order } from '../../shared/models/order.model';
     DatePickerModule,
     ButtonModule,
     TextareaModule,
-    ToastModule
+    ToastModule,
   ],
   providers: [MessageService],
   templateUrl: './new-order.component.html',
-  styleUrls: ['./new-order.component.scss']
+  styleUrls: ['./new-order.component.scss'],
 })
 export class NewOrderComponent {
   orderForm: FormGroup;
@@ -43,31 +43,43 @@ export class NewOrderComponent {
       date: [null, Validators.required],
       articles: ['', Validators.required],
       motif: [''],
-      commentaire: ['']
+      commentaire: [''],
     });
   }
 
   onSubmit() {
     if (this.orderForm.invalid) {
-      this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez remplir tous les champs obligatoires.' });
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'Veuillez remplir tous les champs obligatoires.',
+      });
       return;
     }
 
     const orderData: Order = {
-      ...this.orderForm.value as Order,
-      date: (this.orderForm.value.date as Date).toISOString() // Format date for backend
+      ...(this.orderForm.value as Order),
+      date: (this.orderForm.value.date as Date).toISOString(), // Format date for backend
     };
 
     this.http.post(`${environment.apiUrl}/orders`, orderData).subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Commande passée avec succès!' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Commande passée avec succès!',
+        });
         this.orderForm.reset();
         this.router.navigate(['/orders']);
       },
       error: (err) => {
         console.error('Error creating order:', err);
-        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la création de la commande.' });
-      }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Échec de la création de la commande.',
+        });
+      },
     });
   }
 }
